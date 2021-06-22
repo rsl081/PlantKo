@@ -1,3 +1,83 @@
 <resources>
     <string name="app_name">PlantKoApp</string>
+
+    <string-array name="platcategrory_array">
+        <item><font color="#FFFFFF">Indoor</font></item>
+        <item><font color="#FFFFFF">Outdoor</font></item>
+    </string-array>
+
+    <string-array name="plant_month_array">
+        <item><font color="#FFFFFF">1</font></item>
+        <item><font color="#FFFFFF">2</font></item>
+        <item><font color="#FFFFFF">3</font></item>
+        <item><font color="#FFFFFF">4</font></item>
+        <item><font color="#FFFFFF">5</font></item>
+        <item><font color="#FFFFFF">6</font></item>
+        <item><font color="#FFFFFF">7</font></item>
+        <item><font color="#FFFFFF">8</font></item>
+        <item><font color="#FFFFFF">9</font></item>
+        <item><font color="#FFFFFF">10</font></item>
+        <item><font color="#FFFFFF">11</font></item>
+        <item><font color="#FFFFFF">12</font></item>
+    </string-array>
+
+    <string-array name="plant_day_array">
+        <item><font color="#FFFFFF">1</font></item>
+        <item><font color="#FFFFFF">2</font></item>
+        <item><font color="#FFFFFF">3</font></item>
+        <item><font color="#FFFFFF">4</font></item>
+        <item><font color="#FFFFFF">5</font></item>
+        <item><font color="#FFFFFF">6</font></item>
+        <item><font color="#FFFFFF">7</font></item>
+        <item><font color="#FFFFFF">8</font></item>
+        <item><font color="#FFFFFF">9</font></item>
+        <item><font color="#FFFFFF">10</font></item>
+        <item><font color="#FFFFFF">11</font></item>
+        <item><font color="#FFFFFF">12</font></item>
+        <item><font color="#FFFFFF">13</font></item>
+        <item><font color="#FFFFFF">14</font></item>
+        <item><font color="#FFFFFF">15</font></item>
+        <item><font color="#FFFFFF">16</font></item>
+        <item><font color="#FFFFFF">17</font></item>
+        <item><font color="#FFFFFF">18</font></item>
+        <item><font color="#FFFFFF">19</font></item>
+        <item><font color="#FFFFFF">20</font></item>
+        <item><font color="#FFFFFF">21</font></item>
+        <item><font color="#FFFFFF">22</font></item>
+        <item><font color="#FFFFFF">23</font></item>
+        <item><font color="#FFFFFF">24</font></item>
+        <item><font color="#FFFFFF">25</font></item>
+        <item><font color="#FFFFFF">26</font></item>
+        <item><font color="#FFFFFF">27</font></item>
+        <item><font color="#FFFFFF">28</font></item>
+        <item><font color="#FFFFFF">29</font></item>
+        <item><font color="#FFFFFF">30</font></item>
+        <item><font color="#FFFFFF">31</font></item>
+    </string-array>
+
+    <string-array name="plant_year_array">
+        <item><font color="#FFFFFF">2021</font></item>
+        <item><font color="#FFFFFF">2022</font></item>
+        <item><font color="#FFFFFF">2023</font></item>
+        <item><font color="#FFFFFF">2024</font></item>
+        <item><font color="#FFFFFF">2025</font></item>
+        <item><font color="#FFFFFF">2026</font></item>
+        <item><font color="#FFFFFF">2027</font></item>
+        <item><font color="#FFFFFF">2028</font></item>
+        <item><font color="#FFFFFF">2029</font></item>
+        <item><font color="#FFFFFF">2030</font></item>
+        <item><font color="#FFFFFF">2031</font></item>
+        <item><font color="#FFFFFF">2032</font></item>
+        <item><font color="#FFFFFF">2033</font></item>
+        <item><font color="#FFFFFF">2034</font></item>
+        <item><font color="#FFFFFF">2035</font></item>
+        <item><font color="#FFFFFF">2036</font></item>
+        <item><font color="#FFFFFF">2037</font></item>
+        <item><font color="#FFFFFF">2038</font></item>
+        <item><font color="#FFFFFF">2039</font></item>
+        <item><font color="#FFFFFF">2040</font></item>
+    </string-array>
+
+
+
 </resources>

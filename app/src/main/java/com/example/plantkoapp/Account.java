@@ -12,9 +12,8 @@ public class Account implements Parcelable
     private int intImageProfile;
     private String accountName;
     Plant[] plant;
-
     //Database
-    private long mId;
+    private long accountId;
     private byte[] byteUserPofilePic;
     private String fullname;
     private String username;
@@ -61,7 +60,7 @@ public class Account implements Parcelable
         this.byteUserPofilePic = profilePic;
     }
 
-    public void setBitmapImageProfile(Bitmap bitmapImageProfile) { this.bitmapImageProfile = bitmapImageProfile;}
+    public void setbyteUserPofilePic(byte[] bitmapImageProfile) { this.byteUserPofilePic = bitmapImageProfile;}
     public void setIntImageProfile(int intImageProfile) {
         this.intImageProfile = intImageProfile;
     }
@@ -77,14 +76,10 @@ public class Account implements Parcelable
     public void setPlant(Plant[] plant) {
         this.plant = plant;
     }
-
-    public void setmId(long mId) {
-        this.mId = mId;
+    public void setAccountId(long accountId) {
+        this.accountId = accountId;
     }
-
-    public void setByteUserPofilePic(byte[] byteUserPofilePic) {
-        this.byteUserPofilePic = byteUserPofilePic;
-    }
+    public void setByteUserPofilePic(byte[] byteUserPofilePic) { this.byteUserPofilePic = byteUserPofilePic; }
 
 
     //=======================================GETTERS========================================
@@ -95,12 +90,13 @@ public class Account implements Parcelable
     public String getUsername(){ return  username; }
     public String getEmail() { return email; }
     public String getPassword(){ return  password; }
-    public String getAccountName(){ return accountName; }
-    public long getmId() { return mId; }
+    public String getLocation() { return location; }
+    public long getAccountId() { return accountId; }
     public byte[] getByteUserPofilePic() { return byteUserPofilePic; }
 
-    protected Account(Parcel in) {
-        this.mId = in.readLong();
+    protected Account(Parcel in)
+    {
+        this.accountId = in.readLong();
         this.byteUserPofilePic = in.createByteArray();
         this.uriImageProfile = (Uri) in.readValue(Uri.class.getClassLoader());
         this.bitmapImageProfile = (Bitmap) in.readValue(Bitmap.class.getClassLoader());
@@ -109,6 +105,7 @@ public class Account implements Parcelable
         this.username = in.readString();
         this.email = in.readString();
         this.password = in.readString();
+        this.location = in.readString();
         this.accountName = in.readString();
     }
 
@@ -119,7 +116,7 @@ public class Account implements Parcelable
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(mId);
+        dest.writeLong(accountId);
         dest.writeByteArray(byteUserPofilePic);
         dest.writeValue(uriImageProfile);
         dest.writeValue(bitmapImageProfile);
@@ -128,6 +125,7 @@ public class Account implements Parcelable
         dest.writeString(username);
         dest.writeString(email);
         dest.writeString(password);
+        dest.writeString(location);
         dest.writeString(accountName);
     }
 

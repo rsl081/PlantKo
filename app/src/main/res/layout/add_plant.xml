@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:fillViewport="true"
+    tools:context=".AddPlant">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/register_profile_imageview"
+            android:layout_width="176dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toTopOf="@+id/register_fill_up_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/gallery" />
+
+        <TextView
+            android:id="@+id/register_fill_up_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fill up the form"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/register_textview"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/register_profile_imageview" />
+
+        <TextView
+            android:id="@+id/register_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Add plant"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/register_fill_up_textview" />
+
+        <EditText
+            android:id="@+id/plantname_editext_register"
+            android:layout_width="189dp"
+            android:layout_height="48dp"
+            android:ems="8"
+            android:hint="Enter name"
+            android:inputType="textPersonName"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/plantname_textview_register"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/plantname_textview_register"
+            app:layout_constraintTop_toTopOf="@+id/plantname_textview_register" />
+
+        <Spinner
+            android:id="@+id/username_register"
+            android:layout_width="189dp"
+            android:layout_height="48dp"
+            android:ems="8"
+            android:entries="@array/platcategrory_array"
+            android:hint="Enter username"
+            android:inputType="textPersonName"
+            android:textSize="20sp"
+            android:popupBackground="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/username_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/username_textview"
+            app:layout_constraintTop_toTopOf="@+id/username_textview" />
+
+        <TextView
+            android:id="@+id/email_textview"
+            android:layout_width="123dp"
+            android:layout_height="32dp"
+            android:text="Description:"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:layout_marginBottom="150dp"
+            app:layout_constraintBottom_toTopOf="@+id/date_textview_addplant"
+            app:layout_constraintEnd_toStartOf="@+id/email_editext"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/username_textview" />
+
+        <TextView
+            android:id="@+id/date_textview_addplant"
+            android:layout_width="67dp"
+            android:layout_height="32dp"
+            android:text="Date:"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/time_textview_addplant"
+            app:layout_constraintEnd_toStartOf="@+id/month_addplant_spinner"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email_textview" />
+
+        <TextView
+            android:id="@+id/username_textview"
+            android:layout_width="123dp"
+            android:layout_height="32dp"
+            android:text="Category:"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/email_textview"
+            app:layout_constraintEnd_toStartOf="@+id/username_register"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/plantname_textview_register" />
+
+        <TextView
+            android:id="@+id/plantname_textview_register"
+            android:layout_width="123dp"
+            android:layout_height="32dp"
+            android:text="Plant Name:"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/username_textview"
+            app:layout_constraintEnd_toStartOf="@+id/plantname_editext_register"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/register_textview"
+            app:layout_constraintVertical_chainStyle="spread_inside" />
+
+        <EditText
+            android:id="@+id/email_editext"
+            android:layout_width="189dp"
+            android:layout_height="148dp"
+            android:background="#BCF7AC"
+            android:ems="8"
+            android:gravity="top|left"
+            android:hint="Enter description"
+            android:inputType="textMultiLine"
+            android:lines="10"
+            android:paddingLeft="5dp"
+            android:textColor="#757575"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/email_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/email_textview"
+            app:layout_constraintTop_toTopOf="@+id/email_textview"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/addplant_button"
+            android:layout_width="332dp"
+            android:layout_height="50dp"
+            android:backgroundTint="#8C1B15"
+            android:text="Add to My Plants"
+            android:textColor="@color/white"
+            android:layout_marginBottom="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/time_textview_addplant" />
+
+        <Spinner
+            android:id="@+id/month_addplant_spinner"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:entries="@array/plant_month_array"
+            android:popupBackground="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/date_textview_addplant"
+            app:layout_constraintEnd_toStartOf="@+id/day_plant_spinnner"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/date_textview_addplant"
+            app:layout_constraintTop_toTopOf="@+id/date_textview_addplant" />
+
+        <Spinner
+            android:id="@+id/day_plant_spinnner"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:entries="@array/plant_day_array"
+            android:popupBackground="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/year_addplant_spinner"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/month_addplant_spinner"
+            app:layout_constraintTop_toTopOf="@+id/month_addplant_spinner" />
+
+        <Spinner
+            android:id="@+id/year_addplant_spinner"
+            android:layout_width="110dp"
+            android:layout_height="40dp"
+            android:popupBackground="@color/black"
+            android:entries="@array/plant_year_array"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/day_plant_spinnner"
+            app:layout_constraintTop_toTopOf="@+id/day_plant_spinnner" />
+
+        <TextView
+            android:id="@+id/time_textview_addplant"
+            android:layout_width="67dp"
+            android:layout_height="32dp"
+            android:layout_marginBottom="50dp"
+            android:text="Time: "
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/addplant_button"
+            app:layout_constraintEnd_toStartOf="@+id/time_addplant"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/date_textview_addplant" />
+
+        <TextView
+            android:id="@+id/time_addplant"
+            android:layout_width="123dp"
+            android:layout_height="32dp"
+            android:text="6:30 PM"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/time_textview_addplant"
+            app:layout_constraintEnd_toStartOf="@+id/time_button_addplant"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/time_textview_addplant"
+            app:layout_constraintTop_toTopOf="@+id/time_textview_addplant" />
+
+        <Button
+            android:id="@+id/time_button_addplant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#166E3C"
+            android:text="Add Time"
+            app:layout_constraintBottom_toBottomOf="@+id/time_addplant"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/time_addplant"
+            app:layout_constraintTop_toTopOf="@+id/time_addplant"
+            app:layout_constraintVertical_bias="0.437" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

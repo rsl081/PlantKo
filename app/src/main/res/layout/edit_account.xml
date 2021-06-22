@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:fillViewport="true"
+    tools:context=".Register">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/register_profile_imageview"
+            android:layout_width="176dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toTopOf="@+id/register_fill_up_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/gallery" />
+
+        <TextView
+            android:id="@+id/register_fill_up_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fill up the form"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/register_textview"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/register_profile_imageview" />
+
+        <TextView
+            android:id="@+id/register_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Edit Account"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/register_fill_up_textview" />
+
+        <TextView
+            android:id="@+id/plantname_textview_register"
+            android:layout_width="123dp"
+            android:layout_height="32dp"
+            android:text="Name:"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/username_textview"
+            app:layout_constraintEnd_toStartOf="@+id/plantname_editext_register"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/register_textview"
+            app:layout_constraintVertical_chainStyle="spread" />
+
+        <TextView
+            android:id="@+id/username_textview"
+            android:layout_width="123dp"
+            android:layout_height="32dp"
+            android:text="Username:"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/email_textview"
+            app:layout_constraintEnd_toStartOf="@+id/username_register"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/plantname_textview_register" />
+
+        <EditText
+            android:id="@+id/plantname_editext_register"
+            android:layout_width="189dp"
+            android:layout_height="48dp"
+            android:ems="8"
+            android:hint="Enter name"
+            android:inputType="textPersonName"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/plantname_textview_register"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/plantname_textview_register"
+            app:layout_constraintTop_toTopOf="@+id/plantname_textview_register" />
+
+        <EditText
+            android:id="@+id/username_register"
+            android:layout_width="189dp"
+            android:layout_height="48dp"
+            android:ems="8"
+            android:hint="Enter username"
+            android:inputType="textPersonName"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/username_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/username_textview"
+            app:layout_constraintTop_toTopOf="@+id/username_textview" />
+
+        <TextView
+            android:id="@+id/email_textview"
+            android:layout_width="123dp"
+            android:layout_height="32dp"
+            android:text="Email:"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/password_textview"
+            app:layout_constraintEnd_toStartOf="@+id/email_editext"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/username_textview" />
+
+        <EditText
+            android:id="@+id/email_editext"
+            android:layout_width="189dp"
+            android:layout_height="48dp"
+            android:ems="8"
+            android:hint="Enter email"
+            android:inputType="textPersonName"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/email_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/email_textview"
+            app:layout_constraintTop_toTopOf="@+id/email_textview" />
+
+        <TextView
+            android:id="@+id/password_textview"
+            android:layout_width="123dp"
+            android:layout_height="32dp"
+            android:text="Password:"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/confirmpass_textview"
+            app:layout_constraintEnd_toStartOf="@+id/editext_password"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email_textview" />
+
+        <EditText
+            android:id="@+id/editext_password"
+            android:layout_width="189dp"
+            android:layout_height="48dp"
+            android:ems="8"
+            android:hint="Enter password"
+            android:inputType="textPersonName"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/password_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/password_textview"
+            app:layout_constraintTop_toTopOf="@+id/password_textview" />
+
+        <TextView
+            android:id="@+id/confirmpass_textview"
+            android:layout_width="123dp"
+            android:layout_height="50dp"
+            android:text="Confirm Password:"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/location_textview"
+            app:layout_constraintEnd_toStartOf="@+id/editext_confirmpass"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/password_textview" />
+
+        <EditText
+            android:id="@+id/editext_confirmpass"
+            android:layout_width="189dp"
+            android:layout_height="48dp"
+            android:ems="8"
+            android:hint="Confirm password"
+            android:inputType="textPersonName"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/confirmpass_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/confirmpass_textview"
+            app:layout_constraintTop_toTopOf="@+id/confirmpass_textview" />
+
+        <TextView
+            android:id="@+id/location_textview"
+            android:layout_width="123dp"
+            android:layout_height="32dp"
+            android:text="Location:"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/addplant_button"
+            app:layout_constraintEnd_toStartOf="@+id/editext_location"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/confirmpass_textview" />
+
+        <EditText
+            android:id="@+id/editext_location"
+            android:layout_width="189dp"
+            android:layout_height="48dp"
+            android:ems="8"
+            android:hint="Enter location"
+            android:inputType="textPersonName"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/location_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/location_textview"
+            app:layout_constraintTop_toTopOf="@+id/location_textview" />
+
+        <Button
+            android:id="@+id/addplant_button"
+            android:layout_width="332dp"
+            android:layout_height="50dp"
+            android:backgroundTint="#8C1B15"
+            android:text="Save Changes"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/location_textview" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
