@@ -104,6 +104,7 @@ public class Plant implements Parcelable
     public void writeToParcel(Parcel parcel, int i)
     {
         parcel.writeLong(this.idplant);
+        parcel.writeByteArray(this.plantbyteProfilePic);
         parcel.writeString(this.plantName);
         parcel.writeString(this.plantCategory);
         parcel.writeString(this.plantDescription);

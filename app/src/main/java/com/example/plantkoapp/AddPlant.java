@@ -2,12 +2,17 @@ package com.example.plantkoapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,11 +21,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.AlarmClock;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -28,8 +37,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.util.Calendar;
 
-public class AddPlant extends AppCompatActivity implements View.OnClickListener {
+public class AddPlant extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener  {
 
     SpinnerActivity mySpinners = new SpinnerActivity(this);
 
@@ -38,13 +49,16 @@ public class AddPlant extends AppCompatActivity implements View.OnClickListener 
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     private ImageView imageViewCapture;
 
+    //TextView
+    TextView textViewTime;
+
     //Add Plant EdiText
     EditText editTextPlantName;
     EditText editTextDescription;
 
-
     //Add Plant Buttons
     Button addPlantBtn;
+    Button plantTimeBtn;
 
     //References
     private byte[] selectedImage;
@@ -84,13 +98,14 @@ public class AddPlant extends AppCompatActivity implements View.OnClickListener 
         editTextPlantName = findViewById(R.id.plantname_editext_register);
         mySpinners.MySpinner();
         editTextDescription = findViewById(R.id.email_editext);
-
+        textViewTime = findViewById(R.id.time_addplant);
 
         //ImageView
         imageViewCapture = findViewById(R.id.register_profile_imageview);
 
         //Button
         addPlantBtn = findViewById(R.id.addplant_button);
+        plantTimeBtn = findViewById(R.id.time_button_addplant);
 
         Listeners();
     }
@@ -99,6 +114,7 @@ public class AddPlant extends AppCompatActivity implements View.OnClickListener 
     public void Listeners()
     {
         imageViewCapture.setOnClickListener(this);
+        plantTimeBtn.setOnClickListener(this);
         addPlantBtn.setOnClickListener(this);
     }
 
@@ -113,6 +129,10 @@ public class AddPlant extends AppCompatActivity implements View.OnClickListener 
             case R.id.register_profile_imageview:
                 CaptureImage();
             break;
+            case R.id.time_button_addplant:
+                DialogFragment timePicker = new TimePickerFragment();
+                timePicker.show(getSupportFragmentManager(), "time picker");
+            break;
         }
     }
 
@@ -120,7 +140,10 @@ public class AddPlant extends AppCompatActivity implements View.OnClickListener 
         plantName = editTextPlantName.getText().toString().trim();
         catergory = mySpinners.PlantCategoryMethod();
         description = editTextDescription.getText().toString().trim();
-
+        String month = mySpinners.PlantMonthMethod();
+        String day = mySpinners.PlantDayMethod();
+        String year = mySpinners.PlantYearMethod();
+        date = month + "/" + day + "/" + year;
 
        if (IsError()) {
             ShowErrorDialog();
@@ -154,15 +177,15 @@ public class AddPlant extends AppCompatActivity implements View.OnClickListener 
 
     private void AddList()
     {
+        Toast.makeText(getApplicationContext(), "Plant Successfully Added!", Toast.LENGTH_SHORT).show();
         intentUpdateList = new Intent();
         String getPlantName = editTextPlantName.getText().toString();
-        //String getCategory = mySpinners.PlantCategoryMethod();
         String getDescription = editTextDescription.getText().toString();
 
         Bundle bundle = this.getIntent().getExtras();
         long accountID = bundle.getLong("add_plant",0);
 
-        plant = plantDb.createdPlant(selectedImage,getPlantName,catergory,getDescription,"7/7/2022", "6:30 PM",accountID);
+        plant = plantDb.createdPlant(selectedImage,getPlantName,catergory,getDescription,date, time,accountID);
 
         intentUpdateList.putExtra("new_plant", plant);
         setResult(RESULT_OK, intentUpdateList);
@@ -286,4 +309,43 @@ public class AddPlant extends AppCompatActivity implements View.OnClickListener 
         builder.show();
     }
     //===========================================END Of IMG SECTION==================================
+
+
+    //===========================================ALARM MANAGER=======================================
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        c.set(Calendar.MINUTE, minute);
+        c.set(Calendar.SECOND, 0);
+        updateTimeText(c);
+        //startAlarm(c);
+    }
+
+    private void updateTimeText(Calendar c) {
+        String timeText = "";
+        timeText += DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
+        time = DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
+        textViewTime.setText(timeText);
+    }
+//    private void startAlarm(Calendar c)
+//    {
+//        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//        Intent intent = new Intent(this, AlertReceiver.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+//        if (c.before(Calendar.getInstance())) {
+//            c.add(Calendar.DATE, 1);
+//        }
+//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+//
+//    }
+//    private void cancelAlarm() {
+//        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//        Intent intent = new Intent(this, AlertReceiver.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+//        alarmManager.cancel(pendingIntent);
+//        textViewTime.setText("Alarm canceled");
+//    }
+
+    //===========================================END OF ALARM MANAGER================================
 }

@@ -72,7 +72,7 @@ public class PlantDb {
         return newPlant;
     }
 
-    public List<Plant> getAllPeople(long companyId) {
+    public List<Plant> GetAllPlant(long companyId) {
         List<Plant> personArrayList = new ArrayList<Plant>();
 
         Cursor cursor = mDatabase.query(DBConn.PlantDatabase.PLANT_TB, mAllColumns,
@@ -126,6 +126,19 @@ public class PlantDb {
         mDatabase.update(DBConn.PlantDatabase.PLANT_TB, values,
                 DBConn.PlantDatabase.COLUMN_PLANT_ID + " = ?",
                 new String[]{String.valueOf(getId)});
+    }
+
+    public Plant GetPLantId(long id)
+    {
+        Cursor cursor = mDatabase.query(DBConn.PlantDatabase.PLANT_TB, mAllColumns,
+                DBConn.PlantDatabase.COLUMN_PLANT_ID + " = ? ",
+                new String[] { String.valueOf(id) }, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        Plant plant = CursorToPlant(cursor);
+        return plant;
     }
 
     public long SenderPlant(String activeuser){

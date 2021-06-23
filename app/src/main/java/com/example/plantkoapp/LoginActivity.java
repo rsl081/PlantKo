@@ -24,8 +24,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //SQLite
     private AccountDb accountDb;
-//    protected PersonDb personDb;
-    DBHelper dbHelper;
+    private PlantDb plantDb;
+    private DBHelper dbHelper;
 
 
     //Login Editext
@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void Init()
     {
         this.accountDb = new AccountDb(this);
-//        this.personDb = new PersonDb(this);
+        this.plantDb = new PlantDb(this);
         dbHelper = new DBHelper(this);
 
         usernameEdit = findViewById(R.id.plantname_editext_register);
@@ -129,6 +129,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         long sendUsername = accountDb.Sender(name);
         myIntent.putExtra(Home.EXTRA_ADDED_ACCOUNT, (Parcelable) accountDb.GetAccountId(sendUsername));
         myIntent.putExtra(Home.EXTRA_ADDED_PLANT, sendUsername);
+
+        //myIntent.putExtra(Home.EXTRA_ADDED_ACCOUNT_PLANT, (Parcelable) plantDb.GetPLantId(sendUsername));
     }
 
 

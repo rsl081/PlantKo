@@ -35,7 +35,7 @@
             android:textAlignment="center"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/register_textview"
+            app:layout_constraintBottom_toTopOf="@+id/register_textview"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/register_profile_imageview" />
@@ -76,8 +76,8 @@
             android:entries="@array/platcategrory_array"
             android:hint="Enter username"
             android:inputType="textPersonName"
+            android:popupBackground="#BCF7AC"
             android:textSize="20sp"
-            android:popupBackground="@color/black"
             app:layout_constraintBottom_toBottomOf="@+id/username_textview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -91,28 +91,22 @@
             android:text="Description:"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:layout_marginBottom="150dp"
-            app:layout_constraintBottom_toTopOf="@+id/date_textview_addplant"
+            android:layout_marginBottom="120dp"
+            app:layout_constraintBottom_toTopOf="@+id/month_addplant_spinner"
             app:layout_constraintEnd_toStartOf="@+id/email_editext"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/username_textview" />
 
-        <TextView
-            android:id="@+id/date_textview_addplant"
-            android:layout_width="67dp"
-            android:layout_height="32dp"
-            android:text="Date:"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/time_textview_addplant"
-            app:layout_constraintEnd_toStartOf="@+id/month_addplant_spinner"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email_textview" />
+        <!--        <TextView-->
+        <!--            android:id="@+id/date_textview_addplant"-->
+        <!--            android:layout_width="50dp"-->
+        <!--            android:layout_height="30dp"-->
+        <!--            android:text="Date:"-->
+        <!--            android:textAlignment="center"-->
+        <!--            android:textSize="20sp"-->
+        <!--            tools:layout_editor_absoluteY="426dp" />-->
 
         <TextView
             android:id="@+id/username_textview"
@@ -135,6 +129,7 @@
             android:text="Plant Name:"
             android:textAlignment="center"
             android:textSize="20sp"
+            android:layout_marginTop="40dp"
             app:layout_constraintBottom_toTopOf="@+id/username_textview"
             app:layout_constraintEnd_toStartOf="@+id/plantname_editext_register"
             app:layout_constraintHorizontal_bias="0.5"
@@ -170,7 +165,6 @@
             android:backgroundTint="#8C1B15"
             android:text="Add to My Plants"
             android:textColor="@color/white"
-            android:layout_marginBottom="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -178,52 +172,54 @@
             app:layout_constraintTop_toBottomOf="@+id/time_textview_addplant" />
 
         <Spinner
-            android:id="@+id/month_addplant_spinner"
-            android:layout_width="80dp"
+            android:id="@+id/year_addplant_spinner"
+            android:layout_width="110dp"
             android:layout_height="40dp"
-            android:entries="@array/plant_month_array"
-            android:popupBackground="@color/black"
-            app:layout_constraintBottom_toBottomOf="@+id/date_textview_addplant"
-            app:layout_constraintEnd_toStartOf="@+id/day_plant_spinnner"
+            android:entries="@array/plant_year_array"
+            android:popupBackground="#BCF7AC"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/date_textview_addplant"
-            app:layout_constraintTop_toTopOf="@+id/date_textview_addplant" />
+            app:layout_constraintStart_toEndOf="@+id/day_plant_spinnner"
+            app:layout_constraintTop_toTopOf="@+id/day_plant_spinnner" />
 
         <Spinner
             android:id="@+id/day_plant_spinnner"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:entries="@array/plant_day_array"
-            android:popupBackground="@color/black"
+            android:popupBackground="#BCF7AC"
+            app:layout_constraintBottom_toBottomOf="@+id/month_addplant_spinner"
             app:layout_constraintEnd_toStartOf="@+id/year_addplant_spinner"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/month_addplant_spinner"
             app:layout_constraintTop_toTopOf="@+id/month_addplant_spinner" />
 
         <Spinner
-            android:id="@+id/year_addplant_spinner"
-            android:layout_width="110dp"
+            android:id="@+id/month_addplant_spinner"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:popupBackground="@color/black"
-            android:entries="@array/plant_year_array"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:entries="@array/plant_month_array"
+            android:popupBackground="#BCF7AC"
+            app:layout_constraintBottom_toTopOf="@+id/time_textview_addplant"
+            app:layout_constraintEnd_toStartOf="@+id/day_plant_spinnner"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/day_plant_spinnner"
-            app:layout_constraintTop_toTopOf="@+id/day_plant_spinnner" />
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email_textview" />
 
         <TextView
             android:id="@+id/time_textview_addplant"
             android:layout_width="67dp"
             android:layout_height="32dp"
-            android:layout_marginBottom="50dp"
             android:text="Time: "
             android:textAlignment="center"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/addplant_button"
             app:layout_constraintEnd_toStartOf="@+id/time_addplant"
             app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date_textview_addplant" />
+            app:layout_constraintTop_toBottomOf="@+id/month_addplant_spinner" />
 
         <TextView
             android:id="@+id/time_addplant"
@@ -236,7 +232,8 @@
             app:layout_constraintEnd_toStartOf="@+id/time_button_addplant"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/time_textview_addplant"
-            app:layout_constraintTop_toTopOf="@+id/time_textview_addplant" />
+            app:layout_constraintTop_toTopOf="@+id/time_textview_addplant"
+            app:layout_constraintVertical_bias="1.0" />
 
         <Button
             android:id="@+id/time_button_addplant"

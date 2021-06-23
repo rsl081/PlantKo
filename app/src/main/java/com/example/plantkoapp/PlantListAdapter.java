@@ -20,6 +20,7 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.View
     private ArrayList<Plant> plantArrayList;
     private Context mContext;
     private AccountListAdapter.OnClickListener listener;
+    private AccountListAdapter.OnClickListener listener2;
 
     /**
      * Holds variables in a View
@@ -31,6 +32,7 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.View
         TextView dateTextView;
         TextView timeTextView;
         Button editPlantBtn;
+        Button deletePlantBtn;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -40,6 +42,17 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.View
             this.dateTextView = (TextView) itemView.findViewById(R.id.account_adapter_date);
             this.timeTextView = (TextView) itemView.findViewById(R.id.account_adapter_time);
             this.editPlantBtn = (Button) itemView.findViewById(R.id.setting_btn);
+            this.deletePlantBtn = (Button) itemView.findViewById(R.id.logout_btn);
+
+            this.deletePlantBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if(listener2 != null){
+                        listener2.OnClickListener(position);
+                    }
+                }
+            });
 
             this.editPlantBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -97,6 +110,10 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.View
 
     public void setOnClickListener(AccountListAdapter.OnClickListener listener) {
         this.listener = listener;
+    }
+
+    public void setOnClickListener2(AccountListAdapter.OnClickListener listener2) {
+        this.listener2 = listener2;
     }
 
 }

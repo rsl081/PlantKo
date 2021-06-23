@@ -5,7 +5,7 @@
     android:id="@+id/toast_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="#2CD876"
+    app:cardBackgroundColor="#5AE187"
     android:padding="4dp"
     app:cardCornerRadius="10dp">
 

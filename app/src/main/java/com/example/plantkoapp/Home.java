@@ -2,12 +2,16 @@ package com.example.plantkoapp;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,14 +22,14 @@ import java.util.ArrayList;
 public class Home extends AppCompatActivity implements View.OnClickListener{
 
     //Recycler
-    private RecyclerView recyclerViewPlant;
-    private RecyclerView.LayoutManager myLayoutManagerPlant;
+//    private RecyclerView recyclerViewPlant;
+//    private RecyclerView.LayoutManager myLayoutManagerPlant;
 
     private RecyclerView recyclerViewAccount;
     private RecyclerView.LayoutManager myLayoutManagerAccount;
 
     public static final String POSITION = "com.example.plantkoapp.POSITION";
-    public static final String ACCOUNT_LIST = "com.example.plantkoapp.PEOPLE_LIST";
+    public static final String ACCOUNT_LIST = "com.example.plantkoapp.ACCOUNT_LIST";
 
     //Add the Person objects to an ArrayList
     ArrayList<Plant> plantList = new ArrayList<>();
@@ -39,19 +43,27 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
 
     //Database
     private AccountDb accountDb;
+    Account account;
+    //Plant plant;
     private PlantDb plantDb;
     long createdPlant;
     long sendRegister;
-//    Person person;
-
     //Button
     Button addPlantBtn;
+    Button indoorPlantBtn;
+    Button outdoorPlantBtn;
+
+   //SharePrefs
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String TEXT = "text";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         Init();
     }
 
@@ -64,28 +76,35 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
 
         if(intent != null)
         {
-            Account createdAccount = intent.getParcelableExtra(EXTRA_ADDED_ACCOUNT);
+            account = intent.getParcelableExtra(EXTRA_ADDED_ACCOUNT);
             createdPlant = intent.getLongExtra(EXTRA_ADDED_PLANT,0);
 
+            saveData();
             if(intent.hasExtra("RegisteredUser"))
             {
                 String registeredUsername = intent.getStringExtra("RegisteredUser");
                 sendRegister = accountDb.Sender(registeredUsername);
             }
 
-            if(plantList != null){
-                plantList = (ArrayList<Plant>) plantDb.getAllPeople(createdPlant);
-            }
+//            if(plantList != null){
+//                plantList = (ArrayList<Plant>) plantDb.GetAllPlant(createdPlant);
+//            }
 
-            accountList.add(createdAccount);
+            accountList.add(account);
 
+//            recyclerViewPlant = findViewById(R.id.recycleView_plant);
+//            recyclerViewPlant.setHasFixedSize(true);
+//            myLayoutManagerPlant = new LinearLayoutManager(this);
+//            plantListAdapter = new PlantListAdapter(this, plantList);
+//            recyclerViewPlant.setLayoutManager(myLayoutManagerPlant);
+//            recyclerViewPlant.setAdapter(plantListAdapter);
+//            plantListAdapter.setOnClickListener2(new AccountListAdapter.OnClickListener() {
+//                @Override
+//                public void OnClickListener(int position) {
+//                    DeleteList(position);
+//                }
+//            });
 
-            recyclerViewPlant = findViewById(R.id.recycleView_plant);
-            recyclerViewPlant.setHasFixedSize(true);
-            myLayoutManagerPlant = new LinearLayoutManager(this);
-            plantListAdapter = new PlantListAdapter(this, plantList);
-            recyclerViewPlant.setLayoutManager(myLayoutManagerPlant);
-            recyclerViewPlant.setAdapter(plantListAdapter);
 
             recyclerViewAccount = findViewById(R.id.recycleView_account);
             recyclerViewAccount.setHasFixedSize(true);
@@ -116,9 +135,13 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
 
         }
 
-        //addPlantBtn = findViewById(R.id.btn_add_new_entry);
+        addPlantBtn = findViewById(R.id.btn_add_new_entry);
+        indoorPlantBtn = findViewById(R.id.indoorBtn);
+        outdoorPlantBtn = findViewById(R.id.outdoorBtn);
 
-        //addPlantBtn.setOnClickListener(this);
+        indoorPlantBtn.setOnClickListener(this);
+        outdoorPlantBtn.setOnClickListener(this);
+        addPlantBtn.setOnClickListener(this);
     }//End of Init
 
     @Override
@@ -127,21 +150,25 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 int position = data.getIntExtra("update_list", 0);
-                Account edit_person = data.getParcelableExtra("edit_account");
+                Account edit_account = data.getParcelableExtra("edit_account");
 
-                accountList.set(position, edit_person);
+                accountList.set(position, edit_account);
                 accountListAdapter.notifyDataSetChanged();
             }
         }
-        if (requestCode == 2) {
-            if(resultCode == RESULT_OK) {
-                if(data.getExtras() != null){
-                    Plant plant = data.getParcelableExtra("new_plant");
-                    plantList.add(0,plant);
-                    plantListAdapter.notifyDataSetChanged();
-                }
-            }
-        }//end of if requestCode 2
+        Fragment fragment = (Fragment) getSupportFragmentManager().findFragmentByTag(String.valueOf(new IndoorFragment()));
+        if (fragment != null) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+//        if (requestCode == 2) {
+//            if(resultCode == RESULT_OK) {
+//                if(data.getExtras() != null){
+//                    Plant plant = data.getParcelableExtra("new_plant");
+//                    plantList.add(0,plant);
+//                    plantListAdapter.notifyDataSetChanged();
+//                }
+//            }
+//        }//end of if requestCode 2
     }
 
     public void Logout() {
@@ -164,11 +191,36 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
+        boolean isValidColor = false;
         switch (view.getId()){
-//            case R.id.btn_add_new_entry:
-//                AddNewPlant();
-//                break;
+            case R.id.btn_add_new_entry:
+                AddNewPlant();
+            break;
+
+            case R.id.indoorBtn:
+                outdoorPlantBtn.setAlpha(1f);
+                indoorPlantBtn.setAlpha(0.5f);
+                ReplaceFragment(new IndoorFragment());
+            break;
+
+            case R.id.outdoorBtn:
+                indoorPlantBtn.setAlpha(1f);
+                outdoorPlantBtn.setAlpha(0.5f);
+                ReplaceFragment(new OutdoorFragment());
+            break;
         }
+    }
+
+    private void ReplaceFragment(Fragment fragment)
+    {
+        Bundle data = new Bundle();
+        data.putLong("myData", createdPlant);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragment.setArguments(data);
+        fragmentTransaction.replace(R.id.framelayout, fragment);
+        fragmentTransaction.commit();
     }
 
     public void AddNewPlant(){
@@ -178,8 +230,19 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
         }else{
             addEntryIntent.putExtra("add_plant", sendRegister);
         }
-
         startActivityForResult(addEntryIntent, 2);
+    }
+
+    //=======================SharePreferences========================================================
+    public void saveData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString(TEXT, account.getUsername());
+
+        editor.apply();
+
+        //Toast.makeText(this, "Data saved", Toast.LENGTH_SHORT).show();
     }
 
 }
