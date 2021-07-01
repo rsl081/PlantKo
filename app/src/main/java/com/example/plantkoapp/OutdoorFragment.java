@@ -1,6 +1,9 @@
 package com.example.plantkoapp;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +28,9 @@ public class OutdoorFragment extends Fragment {
     private RecyclerView recyclerViewPlant;
     private RecyclerView.LayoutManager myLayoutManagerPlant;
 
+    public static final String POSITIONPLANT_OUTDOOR = "com.example.plantkoapp.POSITIONPLANT_OUTDOOR";
+    public static final String PLANT_LIST_OUTDOOR = "com.example.plantkoapp.PLANT_LIST_OUTDOOR";
+
     //Add the Person objects to an ArrayList
     ArrayList<Plant> plantList = new ArrayList<>();
     PlantListAdapter plantListAdapter;
@@ -33,6 +39,10 @@ public class OutdoorFragment extends Fragment {
 
 
     ArrayList<Plant> plantList2 = new ArrayList<>();
+
+
+    //References
+    int ctrpending;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +78,21 @@ public class OutdoorFragment extends Fragment {
             @Override
             public void OnClickListener(int position) {
                 DeleteList(position);
+                CancelAlarm();
+            }
+        });
+        plantListAdapter.setOnClickListener(new AccountListAdapter.OnClickListener() {
+            @Override
+            public void OnClickListener(int position)
+            {
+                String plantName = plantList2.get(position).getPlantName();
+                long getPlantId = plantDb.SenderPlant(plantName);
+                Intent intentToEditEntryAct = new Intent(getContext(), EditPlant.class);
+                intentToEditEntryAct.putExtra(POSITIONPLANT_OUTDOOR, position);
+                intentToEditEntryAct.putExtra("plant_id_outdoor", getPlantId);
+                intentToEditEntryAct.putExtra(PLANT_LIST_OUTDOOR, plantList2.get(position));
+                intentToEditEntryAct.putExtra("cancel_alarm_outdoor", ctrpending);
+                getActivity().startActivityForResult(intentToEditEntryAct, 3);
             }
         });
 
@@ -80,6 +105,7 @@ public class OutdoorFragment extends Fragment {
         if (requestCode == 2)
         {
             Plant plant = data.getParcelableExtra("new_plant");
+            ctrpending = data.getIntExtra("alarm_pending",0);
 
             if(plant.getPlantCategory().equals("Outdoor"))
             {
@@ -88,6 +114,14 @@ public class OutdoorFragment extends Fragment {
 
             plantListAdapter.notifyDataSetChanged();
         }//end of if requestCode 2
+
+        if (requestCode == 3) {
+            int position = data.getIntExtra("update_list_outdoor", 0);
+            Plant edit_plant = data.getParcelableExtra("edit_plant_outdoor");
+
+            plantList2.set(position, edit_plant);
+            plantListAdapter.notifyDataSetChanged();
+        }
     }
 
     public void DeleteList(int position) {
@@ -111,4 +145,12 @@ public class OutdoorFragment extends Fragment {
         });
         bldg.show();
     }//end of Delete CURLY BRACES
+
+    private void CancelAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getContext(), AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), ctrpending, intent, 0);
+        alarmManager.cancel(pendingIntent);
+        //textViewTime.setText("Alarm canceled");
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.plantkoapp;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -28,7 +29,7 @@ public class DBHelper extends SQLiteOpenHelper
                 "'"+DBConn.AccountDatabase.COLUMN_ACCOUNT_FULLNAME+"'TEXT NOT NULL,"+
                 "'"+DBConn.AccountDatabase.COLUMN_ACCOUNT_USERNAME+"'TEXT NOT NULL," +
                 "'"+DBConn.AccountDatabase.COLUMN_ACCOUNT_EMAIL+"'TEXT NOT NULL," +
-                "'"+DBConn.AccountDatabase.COLUMN_ACCOUNT_PASSWORD+"'DATE NOT NULL," +
+                "'"+DBConn.AccountDatabase.COLUMN_ACCOUNT_PASSWORD+"'TEXT NOT NULL," +
                 "'"+DBConn.AccountDatabase.COLUMN_ACCOUNT_LOCATION+"'TEXT NOT NULL)";
 
         final String CREATE_PLANT_TABLE = "CREATE TABLE '"+DBConn.PlantDatabase.PLANT_TB+
@@ -39,6 +40,7 @@ public class DBHelper extends SQLiteOpenHelper
                 "'"+DBConn.PlantDatabase.COLUMN_PLANT_DESCRIPTION+"'TEXT NOT NULL," +
                 "'"+DBConn.PlantDatabase.COLUMN_PLANT_DATE+"'DATE NOT NULL," +
                 "'"+DBConn.PlantDatabase.COLUMN_PLANT_TIME+"'TEXT NOT NULL," +
+                "'"+DBConn.PlantDatabase.COLUMN_PLANT_ALARM_TIME+"'INTEGER NOT NULL," +
                 "'"+DBConn.PlantDatabase.COLUMN_PLANT_ACCOUNT_ID+"'INTEGER NOT NULL)";
 
         //Execute Database!
@@ -53,7 +55,6 @@ public class DBHelper extends SQLiteOpenHelper
             e.printStackTrace();
         }
     }
-
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}

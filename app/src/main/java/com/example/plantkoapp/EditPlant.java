@@ -2,7 +2,6 @@ package com.example.plantkoapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.DialogFragment;
 
 import android.Manifest;
@@ -17,9 +16,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,9 +31,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -42,108 +42,185 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
-public class AddPlant extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
-
+public class EditPlant extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener
+{
     SpinnerActivity mySpinners = new SpinnerActivity(this);
 
+    //ImageView
     private static final int CAMERA_REQUEST = 0;
     private static final int GALLERY_REQUEST = 1;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
-    private ImageView imageViewCapture;
+    private ImageView imageViewPic;
 
-    //Date Picker
-    DatePickerDialog dateDialog;
+    //Edit Text
+    private EditText plantNameEditText;
+    private EditText descriptionEditText;
+    private EditText dateEditText;
+
+    //SpinnerForCategory
+    private Spinner spinnerCategory;
 
     //TextView
-    TextView textViewTime;
-
-    //Add Plant EdiText
-    EditText editTextPlantName;
-    EditText editTextDescription;
-    EditText editTextDate;
-
-    //Add Plant Buttons
-    Button addPlantBtn;
-    Button plantTimeBtn;
+    private TextView timeTextView;
+    //Button
+    private Button addTimeBtn;
+    private Button addPlantBtn;
 
     //References
     private byte[] selectedImage;
-    String plantName;
-    String catergory;
-    String description;
-    String mDate;
-    String mTime;
+    private String plantName;
+    private String catergory;
+    private String description;
+    private String mDate;
+    private String mTime;
+    int positionPlantListIndoor;
+    int positionPlantListOutdoor;
+    DatePickerDialog dateDialog;
     int mHour, mMinute;
     int mYear = 0, mMonth = 0, mDayOfMonth = 0;
     final int alarmtime = (int) System.currentTimeMillis();
+    int ctrpending;
 
-    //SQLite
-    private PlantDb plantDb;
-    Intent intentUpdateList;
-    Plant plant;
-
-    //SharePrefs
-    public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String TimeToWaterSharePrefs = "timetoplant";
-
+    //Database
+    PlantDb plantDb;
+    Plant plant_indoor;
+    Plant plant_outdoor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_plant);
+        setContentView(R.layout.edit_plant);
+
         Init();
     }
 
     private void Init()
     {
-        this.plantDb = new PlantDb(this);
+        Intent intent = getIntent();
+        this. plantDb = new PlantDb(this);
 
-        try {
-            Uri uri = Uri.parse("android.resource://com.example.plantkoapp/drawable/unisex");
-            InputStream stream = getContentResolver().openInputStream(uri);
-            selectedImage = GetBytes(stream);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(intent.hasExtra("cancel_alarm_indoor"))
+        {
+            ctrpending = intent.getIntExtra("cancel_alarm_indoor",0);
+        }else{
+            ctrpending = intent.getIntExtra("cancel_alarm_outdoor",0);
+        }
+        Log.v("HAPPY", "pending " + String.valueOf(ctrpending));
+
+        Log.v("HAPPY", String.valueOf(alarmtime));
+        //CancelAlarm();
+
+        imageViewPic = findViewById(R.id.register_profile_imageview);
+        plantNameEditText = findViewById(R.id.plantname_editext_register);
+        spinnerCategory = findViewById(R.id.username_register);
+        descriptionEditText = findViewById(R.id.email_editext);
+        dateEditText = findViewById(R.id.editext_date_addplant);
+        timeTextView = findViewById(R.id.time_addplant);
+        //Buttons
+        addTimeBtn = findViewById(R.id.time_button_addplant);
+        addPlantBtn = findViewById(R.id.addplant_button);
+
+        if(intent.hasExtra("com.example.plantkoapp.POSITIONPLANT_OUTDOOR") && intent.hasExtra("com.example.plantkoapp.PLANT_LIST_OUTDOOR"))
+        {
+            positionPlantListOutdoor = intent.getIntExtra(OutdoorFragment.POSITIONPLANT_OUTDOOR, 0);
+            plant_outdoor = intent.getParcelableExtra(OutdoorFragment.PLANT_LIST_OUTDOOR);
+            byte[] init_newPicPlant = plant_outdoor.getPlantbyteProfilePic();
+            String init_plantName = plant_outdoor.getPlantName();
+            String init_category = plant_outdoor.getPlantCategory();
+            String init_description = plant_outdoor.getPlantDescription();
+            String init_strDate = plant_outdoor.getPlantDate();
+            String init_strTime = plant_outdoor.getPlantTime();
+
+            Bitmap bitmapImages = BitmapFactory.decodeByteArray(init_newPicPlant, 0, init_newPicPlant.length);
+            imageViewPic.setImageBitmap(bitmapImages);
+            plantNameEditText.setText(init_plantName);
+            int selectedPos;
+            if(init_category.equals("Indoor"))
+            {
+                selectedPos = 0;
+            }else{
+                selectedPos = 1;
+            }
+            spinnerCategory.setSelection(selectedPos);
+            descriptionEditText.setText(init_description);
+            //dateEditText.setText(init_strDate);
+            timeTextView.setText(init_strTime);
+        }else{
+            positionPlantListIndoor = intent.getIntExtra(IndoorFragment.POSITIONPLANT, 0);
+            plant_indoor = intent.getParcelableExtra(IndoorFragment.PLANT_LIST);
+
+            byte[] init_newPicPlant = plant_indoor.getPlantbyteProfilePic();
+            String init_plantName = plant_indoor.getPlantName();
+            String init_category = plant_indoor.getPlantCategory();
+            String init_description = plant_indoor.getPlantDescription();
+            String init_strDate = plant_indoor.getPlantDate();
+            String init_strTime = plant_indoor.getPlantTime();
+
+            Bitmap bitmapImages = BitmapFactory.decodeByteArray(init_newPicPlant, 0, init_newPicPlant.length);
+            imageViewPic.setImageBitmap(bitmapImages);
+            plantNameEditText.setText(init_plantName);
+            int selectedPos;
+            if(init_category.equals("Indoor"))
+            {
+                selectedPos = 0;
+            }else{
+                selectedPos = 1;
+            }
+            spinnerCategory.setSelection(selectedPos);
+            descriptionEditText.setText(init_description);
+            //dateEditText.setText(init_strDate);
+            timeTextView.setText(init_strTime);
         }
 
-        editTextPlantName = findViewById(R.id.plantname_editext_register);
-        mySpinners.MySpinner();
-        editTextDescription = findViewById(R.id.email_editext);
-        editTextDate = findViewById(R.id.editext_date_addplant);
-        textViewTime = findViewById(R.id.time_addplant);
-
-        //ImageView
-        imageViewCapture = findViewById(R.id.register_profile_imageview);
-
-        //Button
-        addPlantBtn = findViewById(R.id.addplant_button);
-        plantTimeBtn = findViewById(R.id.time_button_addplant);
-
         Listeners();
+    }//End of Init
+
+    public void Validation(){
+
+        plantName = plantNameEditText.getText().toString();
+        catergory = spinnerCategory.getSelectedItem().toString();
+        description = descriptionEditText.getText().toString();
+        mDate = dateEditText.getText().toString();
+        mTime = timeTextView.getText().toString();
+
+        if(IsError()){
+            ShowErrorDialog();
+        }else{
+            UpdateList();
+            StartAlarm();
+        }
     }
 
-
-    public void Listeners()
+    boolean IsError()
     {
-        imageViewCapture.setOnClickListener(this);
-        editTextDate.setOnClickListener(this);
-        plantTimeBtn.setOnClickListener(this);
+        if(plantName.equals("") || description.equals("") ||
+                mDate.equals("") || mTime.equals(""))
+        {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private void Listeners()
+    {
+        dateEditText.setOnClickListener(this);
+        imageViewPic.setOnClickListener(this);
+        addTimeBtn.setOnClickListener(this);
         addPlantBtn.setOnClickListener(this);
     }
 
     @Override
-    public void onClick(View view)
-    {
+    public void onClick(View view) {
         switch (view.getId())
         {
             case R.id.addplant_button:
+                CancelAlarm();
                 Validation();
-            break;
-            case R.id.register_profile_imageview:
-                CaptureImage();
             break;
             case R.id.time_button_addplant:
                 DialogFragment timePicker = new TimePickerFragment();
@@ -152,8 +229,11 @@ public class AddPlant extends AppCompatActivity implements View.OnClickListener,
             case R.id.editext_date_addplant:
                 Datepickerdialog();
             break;
+            case R.id.register_profile_imageview:
+                CaptureImage();
+            break;
         }
-    }
+    }//End of OnClick
 
     public void Datepickerdialog(){
         Calendar cal = Calendar.getInstance();
@@ -167,11 +247,11 @@ public class AddPlant extends AppCompatActivity implements View.OnClickListener,
                 mMonth = month;
                 mDayOfMonth = dayOfMonth;
                 mYear = year;
-                editTextDate.setText(month+1+"/"+dayOfMonth+"/"+year);
+                dateEditText.setText(month+1+"/"+dayOfMonth+"/"+year);
                 mDate = month+1+"/"+dayOfMonth+"/"+year;
             }
         }, year, month,day);
-        editTextDate.setOnClickListener(new View.OnClickListener() {
+        dateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dateDialog.show();
@@ -181,27 +261,35 @@ public class AddPlant extends AppCompatActivity implements View.OnClickListener,
     }
 
 
-    private void Validation() {
-        plantName = editTextPlantName.getText().toString().trim();
-        catergory = mySpinners.PlantCategoryMethod();
-        description = editTextDescription.getText().toString().trim();
-        mDate = editTextDate.getText().toString().trim();
+    public void UpdateList(){
+        Bitmap bitmap = ((BitmapDrawable) imageViewPic.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageInByte = baos.toByteArray();
 
-       if (IsError()) {
-            ShowErrorDialog();
-        } else {
-            AddList();
-        }
-    }
+        String getPlantName = plantNameEditText.getText().toString();
+//        String getCategory = editTextMn.getText().toString();
+        String getDescription = descriptionEditText.getText().toString();
 
-    boolean IsError()
-    {
-        if(plantName.equals("") || description.equals("") || mDate.equals(""))
+        Intent intentUpdateList = new Intent();
+        Bundle bundle = this.getIntent().getExtras();
+
+        if(catergory.equals("Outdoor"))
         {
-            return true;
+            long plantId_indoor = bundle.getLong("plant_id_outdoor");
+            plantDb.UpdatePlant(plantId_indoor,imageInByte,getPlantName,catergory,getDescription,mDate,mTime, alarmtime);
+
+            intentUpdateList.putExtra("update_list_outdoor", positionPlantListOutdoor);
+            intentUpdateList.putExtra("edit_plant_outdoor", plant_outdoor);
         }else{
-            return false;
+            long plantId_indoor = bundle.getLong("plant_id_indoor");
+            plantDb.UpdatePlant(plantId_indoor,imageInByte,getPlantName,catergory,getDescription,mDate,mTime, alarmtime);
+
+            intentUpdateList.putExtra("update_list_indoor", positionPlantListIndoor);
+            intentUpdateList.putExtra("edit_plant_indoor", plant_indoor);
         }
+        setResult(RESULT_OK, intentUpdateList);
+        finish();
     }
 
     public void ShowErrorDialog(){
@@ -218,26 +306,6 @@ public class AddPlant extends AppCompatActivity implements View.OnClickListener,
         error.show();
     }
 
-    private void AddList()
-    {
-        StartAlarm();
-        Toast.makeText(getApplicationContext(), "Plant Successfully Added!", Toast.LENGTH_SHORT).show();
-        intentUpdateList = new Intent();
-        String getPlantName = editTextPlantName.getText().toString();
-        String getDescription = editTextDescription.getText().toString();
-
-        Bundle bundle = this.getIntent().getExtras();
-        long accountID = bundle.getLong("add_plant",0);
-
-        plant = plantDb.createdPlant(selectedImage,getPlantName,catergory,getDescription, mDate, mTime, alarmtime,accountID);
-
-        intentUpdateList.putExtra("new_plant", plant);
-        intentUpdateList.putExtra("alarm_pending", alarmtime);
-        setResult(RESULT_OK, intentUpdateList);
-        finish();
-
-    }
-
     //============================================IMG SECTION========================================
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -249,7 +317,7 @@ public class AddPlant extends AppCompatActivity implements View.OnClickListener,
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     selectedImage = stream.toByteArray();
-                    imageViewCapture.setImageBitmap(photo);
+                    imageViewPic.setImageBitmap(photo);
                     try {
                         SaveImage(photo, "happy");
                     } catch (IOException e) {
@@ -263,7 +331,7 @@ public class AddPlant extends AppCompatActivity implements View.OnClickListener,
                         Uri uri = data.getData();
                         InputStream iStream =   getContentResolver().openInputStream(uri);
                         selectedImage = GetBytes(iStream);
-                        imageViewCapture.setImageURI(uri);
+                        imageViewPic.setImageURI(uri);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -355,7 +423,6 @@ public class AddPlant extends AppCompatActivity implements View.OnClickListener,
     }
     //===========================================END Of IMG SECTION==================================
 
-
     //===========================================ALARM MANAGER=======================================
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -369,11 +436,13 @@ public class AddPlant extends AppCompatActivity implements View.OnClickListener,
         updateTimeText(c);
     }
 
-    private void updateTimeText(Calendar c) {
+    private void updateTimeText(Calendar c)
+    {
         mTime = DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
-        textViewTime.setText(mTime);
+        timeTextView.setText(mTime);
     }
-    public void StartAlarm()
+
+    private void StartAlarm()
     {
         mMonth++;
         Calendar mCalendar = Calendar.getInstance();
@@ -389,25 +458,19 @@ public class AddPlant extends AppCompatActivity implements View.OnClickListener,
         AlarmManager mgrAlarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
         intent.putExtra("thetime", mTime);
-
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, alarmtime, intent, 0);
         mgrAlarm.setExact(AlarmManager.RTC_WAKEUP, selectedTimestamp, pendingIntent);
 //        mgrAlarm.setRepeating(AlarmManager.RTC_WAKEUP, selectedTimestamp,
 //                24*60*60*1000 , pendingIntent);
-
     }
-    //===========================================END OF ALARM MANAGER================================
 
-
-    //=======================SharePreferences========================================================
-    public void saveData() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        if(editor != null)
-        {
-            editor.putString(TimeToWaterSharePrefs, mTime);
-            editor.apply();
-        }
+    private void CancelAlarm()
+    {
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, ctrpending, intent, 0);
+//        pendingIntent.cancel();
+        alarmManager.cancel(pendingIntent);
     }
+
 }

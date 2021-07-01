@@ -78,7 +78,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register_page_textvoew" />
+        app:layout_constraintTop_toBottomOf="@+id/register_page_textvoew"
+        app:layout_constraintVertical_chainStyle="spread" />
 
     <EditText
         android:id="@+id/editext_password"
@@ -131,10 +132,24 @@
         android:backgroundTint="#8C1B15"
         android:text="Register"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/sign_in_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_button" />
+
+    <Button
+        android:id="@+id/sign_in_button"
+        android:layout_width="332dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/white"
+        android:text="Forgot Password?"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.plantkoapp;
 
+import android.database.Cursor;
 import android.provider.BaseColumns;
 
 public class DBConn
@@ -30,6 +31,12 @@ public class DBConn
         public static String COLUMN_PLANT_DESCRIPTION = "description_plant";
         public static String COLUMN_PLANT_DATE = "date_plant";
         public static String COLUMN_PLANT_TIME = "time_plant";
+        public static String COLUMN_PLANT_ALARM_TIME = "alarm_time_plant";
         public static String COLUMN_PLANT_ACCOUNT_ID = "account_plant";
     }
+
+    public static String getColumnString(Cursor cursor, String columnName) {
+        return cursor.getString( cursor.getColumnIndex(columnName) );
+    }
+
 }

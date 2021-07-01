@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -55,7 +56,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
 
    //SharePrefs
     public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String TEXT = "text";
+    public static final String UsernameSharePrefs = "text";
+    public static final String TimeToWaterSharePrefs = "timetoplant";
 
 
     @Override
@@ -86,25 +88,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
                 sendRegister = accountDb.Sender(registeredUsername);
             }
 
-//            if(plantList != null){
-//                plantList = (ArrayList<Plant>) plantDb.GetAllPlant(createdPlant);
-//            }
 
             accountList.add(account);
-
-//            recyclerViewPlant = findViewById(R.id.recycleView_plant);
-//            recyclerViewPlant.setHasFixedSize(true);
-//            myLayoutManagerPlant = new LinearLayoutManager(this);
-//            plantListAdapter = new PlantListAdapter(this, plantList);
-//            recyclerViewPlant.setLayoutManager(myLayoutManagerPlant);
-//            recyclerViewPlant.setAdapter(plantListAdapter);
-//            plantListAdapter.setOnClickListener2(new AccountListAdapter.OnClickListener() {
-//                @Override
-//                public void OnClickListener(int position) {
-//                    DeleteList(position);
-//                }
-//            });
-
 
             recyclerViewAccount = findViewById(R.id.recycleView_account);
             recyclerViewAccount.setHasFixedSize(true);
@@ -156,19 +141,21 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
                 accountListAdapter.notifyDataSetChanged();
             }
         }
-        Fragment fragment = (Fragment) getSupportFragmentManager().findFragmentByTag(String.valueOf(new IndoorFragment()));
-        if (fragment != null) {
+//        Fragment fragment = (Fragment) getSupportFragmentManager().findFragmentByTag(String.valueOf(new IndoorFragment()));
+//        if (fragment != null) {
+//            fragment.onActivityResult(requestCode, resultCode, data);
+//        }
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
             fragment.onActivityResult(requestCode, resultCode, data);
         }
-//        if (requestCode == 2) {
-//            if(resultCode == RESULT_OK) {
-//                if(data.getExtras() != null){
-//                    Plant plant = data.getParcelableExtra("new_plant");
-//                    plantList.add(0,plant);
-//                    plantListAdapter.notifyDataSetChanged();
-//                }
+//        if (requestCode == 2)
+//        {
+//            if(resultCode == RESULT_OK)
+//            {
+//                int ctrpending = data.getIntExtra("alarm_pending",0);
+//                Log.v("HAPPY", String.valueOf(ctrpending));
 //            }
-//        }//end of if requestCode 2
+//        }//end of if requestCode
     }
 
     public void Logout() {
@@ -238,11 +225,13 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString(TEXT, account.getUsername());
+        if(editor != null)
+        {
+            editor.putString(UsernameSharePrefs, account.getUsername());
+           // editor.putString()
 
-        editor.apply();
-
-        //Toast.makeText(this, "Data saved", Toast.LENGTH_SHORT).show();
+            editor.apply();
+        }
     }
 
 }

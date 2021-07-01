@@ -86,14 +86,6 @@ public class EditAccount extends AppCompatActivity implements View.OnClickListen
     private void Init()
     {
         this.accountDb = new AccountDb(this);
-        try {
-            Uri uri = Uri.parse("android.resource://com.example.plantkoapp/drawable/unisex");
-            InputStream stream = getContentResolver().openInputStream(uri);
-            selectedImage = GetBytes(stream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         Intent intent = getIntent();
         positionOfAccount = intent.getIntExtra(Home.POSITION, 0);
 

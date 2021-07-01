@@ -25,6 +25,7 @@ public class PlantDb {
         DBConn.PlantDatabase.COLUMN_PLANT_DESCRIPTION,
         DBConn.PlantDatabase.COLUMN_PLANT_DATE,
         DBConn.PlantDatabase.COLUMN_PLANT_TIME,
+        DBConn.PlantDatabase.COLUMN_PLANT_ALARM_TIME,
         DBConn.PlantDatabase.COLUMN_PLANT_ACCOUNT_ID
     };
 
@@ -49,7 +50,7 @@ public class PlantDb {
     }
 
     public Plant createdPlant(byte[] profilePicPlant, String plantname, String category, String description,
-                              String date, String time, long accountIDPlant)
+                              String date, String time, int alarm, long accountIDPlant)
     {
         ContentValues values = new ContentValues();
         values.put(DBConn.PlantDatabase.COLUMN_PLANT_IMAGE, profilePicPlant);
@@ -58,6 +59,7 @@ public class PlantDb {
         values.put(DBConn.PlantDatabase.COLUMN_PLANT_DESCRIPTION, description);
         values.put(DBConn.PlantDatabase.COLUMN_PLANT_DATE, date);
         values.put(DBConn.PlantDatabase.COLUMN_PLANT_TIME, time);
+        values.put(DBConn.PlantDatabase.COLUMN_PLANT_ALARM_TIME, alarm);
         values.put(DBConn.PlantDatabase.COLUMN_PLANT_ACCOUNT_ID, accountIDPlant);
 
         long insertId = mDatabase.insert(DBConn.PlantDatabase.PLANT_TB, null, values);
@@ -100,6 +102,7 @@ public class PlantDb {
         plant.setPlantDescription(cursor.getString(4));
         plant.setPlantDate(cursor.getString(5));
         plant.setPlantTime(cursor.getString(6));
+        plant.setAlarmtime(cursor.getInt(7));
 
         return plant;
     }
@@ -113,7 +116,7 @@ public class PlantDb {
 
     public void UpdatePlant(
             long getId, byte[] plantPic, String plantName, String category, String description,
-            String date, String time)
+            String date, String time, int alarmtime)
     {
         ContentValues values = new ContentValues();
         values.put(DBConn.PlantDatabase.COLUMN_PLANT_IMAGE, plantPic);
@@ -122,6 +125,7 @@ public class PlantDb {
         values.put(DBConn.PlantDatabase.COLUMN_PLANT_DESCRIPTION, description);
         values.put(DBConn.PlantDatabase.COLUMN_PLANT_DATE, date);
         values.put(DBConn.PlantDatabase.COLUMN_PLANT_TIME, time);
+        values.put(DBConn.PlantDatabase.COLUMN_PLANT_ALARM_TIME, alarmtime);
 
         mDatabase.update(DBConn.PlantDatabase.PLANT_TB, values,
                 DBConn.PlantDatabase.COLUMN_PLANT_ID + " = ?",
@@ -161,4 +165,26 @@ public class PlantDb {
         }
         return rv;
     }// End oF Curly Braces Sender
+
+    public int AlarmSenderPlant(String activeuser){
+        // array of columns to fetch
+        int rv = -1;
+        mDatabase =  mDbHelper.getReadableDatabase();
+        Cursor cursor = mDatabase.query(DBConn.PlantDatabase.PLANT_TB, mAllColumns,
+                DBConn.PlantDatabase.COLUMN_PLANT_NAME + " = ? ",
+                new String[] { activeuser }, null, null, null);
+
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                rv = (int) cursor.getLong(cursor.getColumnIndex(DBConn.PlantDatabase.COLUMN_PLANT_ALARM_TIME));
+            }
+        }
+        finally {
+            if(cursor != null) {
+                cursor.close();
+            }
+        }
+        return rv;
+    }// End oF Curly Braces Sender
+
 }

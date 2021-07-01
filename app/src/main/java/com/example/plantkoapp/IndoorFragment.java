@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -13,15 +14,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 
 public class IndoorFragment extends Fragment {
@@ -29,6 +28,9 @@ public class IndoorFragment extends Fragment {
     View view;
     private RecyclerView recyclerViewPlant;
     private RecyclerView.LayoutManager myLayoutManagerPlant;
+
+    public static final String POSITIONPLANT = "com.example.plantkoapp.POSITIONPLANT";
+    public static final String PLANT_LIST = "com.example.plantkoapp.PLANT_LIST";
 
     //Add the Person objects to an ArrayList
     ArrayList<Plant> plantList = new ArrayList<>();
@@ -38,6 +40,14 @@ public class IndoorFragment extends Fragment {
 
 
     ArrayList<Plant> plantList2 = new ArrayList<>();
+
+    //References
+    int ctrpending;
+
+    //SharePrefs
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String TimeToWaterSharePrefs = "timetoplant";
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,9 +83,25 @@ public class IndoorFragment extends Fragment {
             @Override
             public void OnClickListener(int position) {
                 DeleteList(position);
+                CancelAlarm();
             }
         });
 
+        plantListAdapter.setOnClickListener(new AccountListAdapter.OnClickListener() {
+            @Override
+            public void OnClickListener(int position)
+            {
+                String plantName = plantList2.get(position).getPlantName();
+                long getPlantId = plantDb.SenderPlant(plantName);
+                int getAlarmNo  = plantDb.AlarmSenderPlant(plantName);
+                Intent intentToEditEntryAct = new Intent(getContext(), EditPlant.class);
+                intentToEditEntryAct.putExtra(POSITIONPLANT, position);
+                intentToEditEntryAct.putExtra("plant_id_indoor", getPlantId);
+                intentToEditEntryAct.putExtra(PLANT_LIST, plantList2.get(position));
+                intentToEditEntryAct.putExtra("cancel_alarm_indoor", getAlarmNo);
+                getActivity().startActivityForResult(intentToEditEntryAct, 3);
+            }
+        });
         return view;
     }
 
@@ -85,14 +111,23 @@ public class IndoorFragment extends Fragment {
         if (requestCode == 2)
         {
             Plant plant = data.getParcelableExtra("new_plant");
+            ctrpending = data.getIntExtra("alarm_pending",0);
 
             if(plant.getPlantCategory().equals("Indoor"))
             {
-                plantList2.add(plant);
+                plantList2.add(plant);;
             }
 
             plantListAdapter.notifyDataSetChanged();
         }//end of if requestCode 2
+
+        if (requestCode == 3) {
+            int position = data.getIntExtra("update_list_indoor", 0);
+            Plant edit_plant = data.getParcelableExtra("edit_plant_indoor");
+
+            plantList2.set(position, edit_plant);
+            plantListAdapter.notifyDataSetChanged();
+        }
     }
 
     public void DeleteList(int position) {
@@ -117,23 +152,12 @@ public class IndoorFragment extends Fragment {
         bldg.show();
     }//end of Delete CURLY BRACES
 
-    private void startAlarm(Calendar c)
-    {
+    private void CancelAlarm() {
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getContext(), AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, intent, 0);
-        if (c.before(Calendar.getInstance())) {
-            c.add(Calendar.DATE, 1);
-        }
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
-
-    }
-    private void cancelAlarm() {
-        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getContext(), AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), ctrpending, intent, 0);
         alarmManager.cancel(pendingIntent);
-        //textViewTime.setText("Alarm canceled");
     }
+
 
 }

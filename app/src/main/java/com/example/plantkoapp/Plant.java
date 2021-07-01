@@ -13,8 +13,9 @@ public class Plant implements Parcelable
     private String plantName;
     private String plantCategory;
     private String plantDescription;
-    private String plantTime;
     private String plantDate;
+    private String plantTime;
+    private int alarmtime;
 
     Plant(){}
 
@@ -44,6 +45,9 @@ public class Plant implements Parcelable
 
     public void setPlantDate(String plantDate) {
         this.plantDate = plantDate;
+    }
+    public void setAlarmtime(int alarmtime) {
+        this.alarmtime = alarmtime;
     }
 
 
@@ -83,6 +87,10 @@ public class Plant implements Parcelable
     public String getPlantDate() {
         return plantDate;
     }
+    public int getAlarmtime() {
+        return alarmtime;
+    }
+
 
     public Plant(Parcel in)
     {
@@ -93,6 +101,7 @@ public class Plant implements Parcelable
         this.plantDescription = in.readString();
         this.plantDate = in.readString();
         this.plantTime = in.readString();
+        this.alarmtime = in.readInt();
     }
 
     @Override
@@ -110,6 +119,7 @@ public class Plant implements Parcelable
         parcel.writeString(this.plantDescription);
         parcel.writeString(this.plantDate);
         parcel.writeString(this.plantTime);
+        parcel.writeInt(this.alarmtime);
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
