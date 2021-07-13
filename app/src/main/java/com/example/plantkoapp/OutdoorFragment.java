@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,8 +119,18 @@ public class OutdoorFragment extends Fragment {
         if (requestCode == 3) {
             int position = data.getIntExtra("update_list_outdoor", 0);
             Plant edit_plant = data.getParcelableExtra("edit_plant_outdoor");
+            if(edit_plant != null)
+            {
+                if(edit_plant.equals("Outdoor"))
+                {
+                    plantList2.set(position, edit_plant);
+                }else{
+                    plantList2.remove(position);
+                }
+            }else{
+                plantList2.remove(position);
+            }
 
-            plantList2.set(position, edit_plant);
             plantListAdapter.notifyDataSetChanged();
         }
     }

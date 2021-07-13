@@ -117,15 +117,25 @@ public class IndoorFragment extends Fragment {
             {
                 plantList2.add(plant);;
             }
-
             plantListAdapter.notifyDataSetChanged();
         }//end of if requestCode 2
 
-        if (requestCode == 3) {
+        if (requestCode == 3)
+        {
             int position = data.getIntExtra("update_list_indoor", 0);
             Plant edit_plant = data.getParcelableExtra("edit_plant_indoor");
-
-            plantList2.set(position, edit_plant);
+            Log.v("HW", String.valueOf(position));
+            if(edit_plant != null)
+            {
+                if(edit_plant.equals("Indoor"))
+                {
+                    //plantList2.set(position, edit_plant);
+                }else{
+                    plantList2.remove(position);
+                }
+            }else{
+                plantList2.remove(position);
+            }
             plantListAdapter.notifyDataSetChanged();
         }
     }

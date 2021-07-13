@@ -1,6 +1,5 @@
 package com.example.plantkoapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,21 +10,14 @@ import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.TaskCompletionSource;
 
 import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener
 {
-
     private Toast popUp;
     private String name, pass;
     private ArrayList<Account> accountArrayList = new ArrayList<>();
@@ -44,8 +36,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //Login Btn
     Button loginBtn;
     Button registerBtn;
-
-
+    Button forgotPassBtn;
     //Google Login
 
 
@@ -70,9 +61,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //Btn
         loginBtn = findViewById(R.id.login_button);
         registerBtn = findViewById(R.id.register_button);
+        forgotPassBtn = findViewById(R.id.forgot_btn);
 
         loginBtn.setOnClickListener(this);
         registerBtn.setOnClickListener(this);
+        forgotPassBtn.setOnClickListener(this);
 
     }
 
@@ -88,6 +81,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             break;
             case R.id.register_button:
                 Registration();
+            break;
+            case R.id.forgot_btn:
+                showToast2();
             break;
         }
     }
@@ -109,6 +105,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 myIntent = new Intent(this, Home.class);
                 myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 Login();
+                startActivity(myIntent);
+                finish();
+            } else {
+                AlertDialag();
+            }
+        }
+    }//end of showToast CURLY BRACES
+
+    public void showToast2() {
+        if (name.matches("")) {
+            if (name.matches("")) {
+                Toast.makeText(this, "You did not enter a username", Toast.LENGTH_SHORT).show();
+                usernameEdit.setHint("Put your username here!");
+            }
+        } else {
+            if (true) {
+                CustomToast();
+                myIntent = new Intent(this, ForgotPassword.class);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                ForgotPassword();
                 startActivity(myIntent);
                 finish();
             } else {
@@ -148,6 +164,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //myIntent.putExtra(Home.EXTRA_ADDED_ACCOUNT_PLANT, (Parcelable) plantDb.GetPLantId(sendUsername));
     }
 
+    public void ForgotPassword()
+    {
+        myIntent.putExtra("username", name);
+        myIntent.putExtra("password", pass);
+        long sendUsername = accountDb.Sender(name);
+        myIntent.putExtra(ForgotPassword.EXTRA_ADDED_ACCOUNT_FORGOT, (Parcelable) accountDb.GetAccountId(sendUsername));
+
+        //myIntent.putExtra(Home.EXTRA_ADDED_ACCOUNT_PLANT, (Parcelable) plantDb.GetPLantId(sendUsername));
+    }
 
     private void Registration()
     {
@@ -155,21 +180,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivity(intent);
         finish();
     }
+    public void ShowErrorDialog()
+    {
+        String username = "\nUsername is Missing!\n";
 
+        android.app.AlertDialog.Builder error = new android.app.AlertDialog.Builder(this);
+        error.setTitle("Error/s!");
+        error.setMessage((this.name.matches("") ? username : username.replaceAll("[\n]", "").replaceAll("([a-z])", "").replaceAll("([A-Z])", "").replaceAll("!", "")));
 
-//Google Btn
-//    protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
-//        // Find the TextView that is inside of the SignInButton and set its text
-//        for (int i = 0; i < signInButton.getChildCount(); i++) {
-//            View v = signInButton.getChildAt(i);
-//
-//            if (v instanceof TextView) {
-//                TextView tv = (TextView) v;
-//                tv.setText(buttonText);
-//                return;
-//            }
-//        }
-//    }
+        error.setPositiveButton("Okay",null);
+        error.show();
+    }// end of ShowErrorDialog
+    public void ShowSuccessDialog()
+    {
+        android.app.AlertDialog.Builder error = new android.app.AlertDialog.Builder(this);
+        error.setTitle("Username Found!");
+        error.setMessage("Username: \n" + name);
+        error.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ForgotPassword();
+            }
+        });
+        error.show();
+    }// end of ShowSuccessDialog
 
 
 

@@ -268,25 +268,42 @@ public class EditPlant extends AppCompatActivity implements View.OnClickListener
         byte[] imageInByte = baos.toByteArray();
 
         String getPlantName = plantNameEditText.getText().toString();
-//        String getCategory = editTextMn.getText().toString();
+        catergory = spinnerCategory.getSelectedItem().toString();
         String getDescription = descriptionEditText.getText().toString();
 
         Intent intentUpdateList = new Intent();
         Bundle bundle = this.getIntent().getExtras();
-
         if(catergory.equals("Outdoor"))
         {
-            long plantId_indoor = bundle.getLong("plant_id_outdoor");
-            plantDb.UpdatePlant(plantId_indoor,imageInByte,getPlantName,catergory,getDescription,mDate,mTime, alarmtime);
 
-            intentUpdateList.putExtra("update_list_outdoor", positionPlantListOutdoor);
-            intentUpdateList.putExtra("edit_plant_outdoor", plant_outdoor);
-        }else{
             long plantId_indoor = bundle.getLong("plant_id_indoor");
             plantDb.UpdatePlant(plantId_indoor,imageInByte,getPlantName,catergory,getDescription,mDate,mTime, alarmtime);
 
             intentUpdateList.putExtra("update_list_indoor", positionPlantListIndoor);
             intentUpdateList.putExtra("edit_plant_indoor", plant_indoor);
+
+
+
+            long plantId_indoor2 = bundle.getLong("plant_id_outdoor");
+            plantDb.UpdatePlant(plantId_indoor2,imageInByte,getPlantName,catergory,getDescription,mDate,mTime, alarmtime);
+
+            intentUpdateList.putExtra("update_list_outdoor", positionPlantListOutdoor);
+            intentUpdateList.putExtra("edit_plant_outdoor", plant_outdoor);
+        }
+        if(catergory.equals("Indoor")){
+
+            long plantId_indoor = bundle.getLong("plant_id_outdoor");
+            plantDb.UpdatePlant(plantId_indoor,imageInByte,getPlantName,catergory,getDescription,mDate,mTime, alarmtime);
+
+            intentUpdateList.putExtra("update_list_outdoor", positionPlantListOutdoor);
+            intentUpdateList.putExtra("edit_plant_outdoor", plant_outdoor);
+
+            long plantId_indoor2 = bundle.getLong("plant_id_indoor");
+            plantDb.UpdatePlant(plantId_indoor2,imageInByte,getPlantName,catergory,getDescription,mDate,mTime, alarmtime);
+
+            intentUpdateList.putExtra("update_list_indoor", positionPlantListIndoor);
+            intentUpdateList.putExtra("edit_plant_indoor", plant_indoor);
+
         }
         setResult(RESULT_OK, intentUpdateList);
         finish();

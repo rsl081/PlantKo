@@ -88,7 +88,7 @@
         android:layout_marginEnd="48dp"
         android:ems="8"
         android:hint="Enter password"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/username_textview"
@@ -99,14 +99,15 @@
 
     <TextView
         android:id="@+id/username_textview"
+
         android:layout_width="123dp"
         android:layout_height="32dp"
-        android:layout_marginStart="36dp"
+        android:layout_marginStart="28dp"
         android:text="Password:"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/login_button"
-        app:layout_constraintEnd_toStartOf="@+id/username_register"
+        app:layout_constraintEnd_toStartOf="@+id/editext_password"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
@@ -132,14 +133,14 @@
         android:backgroundTint="#8C1B15"
         android:text="Register"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/sign_in_button"
+        app:layout_constraintBottom_toTopOf="@+id/forgot_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_button" />
 
     <Button
-        android:id="@+id/sign_in_button"
+        android:id="@+id/forgot_btn"
         android:layout_width="332dp"
         android:layout_height="50dp"
         android:backgroundTint="@color/white"

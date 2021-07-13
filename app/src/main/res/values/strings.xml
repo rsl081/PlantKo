@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PlantKoApp</string>
+    <string name="app_name">PlantsKo</string>
 
     <string-array name="platcategrory_array">
         <item><font color="#616161">Indoor</font></item>

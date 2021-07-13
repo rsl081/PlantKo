@@ -57,8 +57,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
    //SharePrefs
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String UsernameSharePrefs = "text";
-    public static final String TimeToWaterSharePrefs = "timetoplant";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -79,6 +77,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
         if(intent != null)
         {
             account = intent.getParcelableExtra(EXTRA_ADDED_ACCOUNT);
+
             createdPlant = intent.getLongExtra(EXTRA_ADDED_PLANT,0);
 
             saveData();
